@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>大肥鱼影音媒体工作台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<section class="home screen on" id="home">
+  <div class="htop">
+    <div class="hlogo"><img src="images/appicon.png" alt=""></div>
+    <h2>大肥鱼影音媒体工作台</h2>
+    <p class="hsub">本地音频 · 视频 · 格式工具</p>
+    <div class="hver" id="appVer">v0.85</div>
+  </div>
+  <div class="cards">
+    <button class="card" id="goAudio"><b><span class="ci"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg></span>音频播放</b><span>播放列表 · 三种循环 · 倍速 · 后台播放</span></button>
+    <button class="card" id="goVideo"><b><span class="ci"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg></span>视频播放</b><span>全屏 · 倍速 · A-B 循环 · 连播</span></button>
+    <button class="card" id="goTools"><b><span class="ci"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9.4 9.4a2.1 2.1 0 0 1-3-3z"/><path d="M3 21l4-4"/></svg></span>格式工具</b><span>转换 · 剪切 · 分段 · 提取音频 · 修复</span></button>
+  </div>
+  <button class="hset hbottom" id="btnSettings"><span class="ci"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>设置</button>
+</section>
+
+<section id="audio" class="screen">
+<header class="head">
+  <div class="logo">音</div>
+  <div class="titles">
+    <h1>我的音乐</h1>
+    <p id="count">正在扫描…</p>
+  </div>
+  <div class="hbtns">
+    <button class="ghost" id="btnSel">选择</button>
+    <button class="ghost" id="btnAdd">＋ 添加</button>
+    <button class="ghost" id="aBack"><span class="ci"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>返回</button>
+  </div>
+</header>
+
+<div class="batchbar" id="batchBar">
+  <button class="ghost" id="bAll">全选</button>
+  <span class="bsel" id="bCount">已选 0 项</span>
+  <span class="bsp"></span>
+  <button class="ghost danger2" id="bDel">删除</button>
+  <button class="ghost" id="bMoveUp">↑</button>
+  <button class="ghost" id="bMoveDown">↓</button>
+  <button class="ghost" id="bCancel">取消</button>
+</div>
+
+<div class="search"><input id="q" placeholder="搜索歌名 / 歌手" autocomplete="off"></div>
+
+<main id="list" class="list"></main>
+<div class="bar" id="bar">
+  <div class="row1">
+    <div class="meta">
+      <div class="t" id="nowTitle">未在播放</div>
+      <div class="a" id="nowArtist"></div>
+    </div>
+    <button class="icon" id="btnLoop" title="循环方式"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
+  </div>
+  <input type="range" id="prog" min="0" max="1000" value="0">
+  <div class="row3">
+    <span id="curTime">0:00</span>
+    <div class="ctrls">
+      <button class="icon" id="btnPrev"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14l-11-7z"/></svg></button>
+      <button class="icon big" id="btnPlay"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+      <button class="icon" id="btnNext"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+      <button class="icon txt" id="aSpeed">1.0×</button>
+      <button class="icon txt" id="aAB">A-B</button>
+    </div>
+    <span id="allTime">0:00</span>
+  </div>
+</div>
+</section>
+
+
+<audio id="au"></audio>
+<section id="video" class="screen" style="display:none">
+  <header class="head" id="vHead">
+    <div class="logo">频</div>
+    <div class="titles"><h1>视频</h1><p id="vCount">在播放列表里选一个视频</p></div>
+    <div class="hbtns">
+      <button class="ghost" id="vSel">选择</button>
+      <button class="ghost" id="vAdd">＋ 添加</button>
+      <button class="ghost" id="vMode">播完：停止</button>
+      <button class="ghost" id="vBack"><span class="ci"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>返回</button>
+    </div>
+  </header>
+
+  <div class="batchbar" id="vBatchBar">
+    <button class="ghost" id="vbAll">全选</button>
+    <span class="bsel" id="vbCount">已选 0 项</span>
+    <span class="bsp"></span>
+    <button class="ghost danger2" id="vbDel">删除</button>
+    <button class="ghost" id="vbUp">↑</button>
+    <button class="ghost" id="vbDown">↓</button>
+    <button class="ghost" id="vbCancel">取消</button>
+  </div>
+  <div class="vwrap">
+    <video id="vid" playsinline preload="metadata"></video>
+    </div>
+  <div class="vctl">
+      <input type="range" id="vProg" min="0" max="1000" value="0">
+      <div class="vrow">
+        <button class="vbtn" id="vPlay"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+        <span id="vTime">0:00 / 0:00</span>
+        <span class="vsp"></span>
+        <button class="vbtn txt vopt" id="vSpeed">1.0×</button>
+        <button class="vbtn txt vopt" id="vAB">A-B</button>
+        <button class="vmore" id="vMore">⋯</button>
+        <button class="vbtn" id="vFull"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+      </div>
+    </div>
+
+  <div class="vlist" id="vList"></div>
+</section>
+
+<section id="tools" class="screen">
+  <header class="head">
+    <div class="logo">工</div>
+    <div class="titles"><h1>格式工具</h1><p id="toolHint">选一个文件开始</p></div>
+    <button class="ghost" id="toolBack"><span class="ci"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>返回</button>
+  </header>
+
+  <div class="tools-body">
+    <div class="trow">
+      <label>源文件</label>
+      <button class="pick" id="pickSrc">点这里选择文件…</button>
+    </div>
+    <div class="trow"><span class="srcName" id="srcName">支持音频和视频；选好后下面按钮才会针对它工作</span></div>
+
+    <div class="tgroup">
+      <div class="tgroup-title">转换格式</div>
+      <div class="trow">
+        <label>目标格式</label>
+        <select id="fmtSel">
+          <option value="mp3">MP3（音频，通用）</option>
+          <option value="m4a">M4A / AAC（音频）</option>
+          <option value="flac">FLAC（无损音频）</option>
+          <option value="wav">WAV（无损音频）</option>
+          <option value="ogg">OGG（音频）</option>
+          <option value="mp4">MP4（视频）</option>
+          <option value="webm">WebM（视频）</option>
+        </select>
+      </div>
+      <button class="act" id="doConvert">开始转换</button>
+    </div>
+
+    <div class="tgroup">
+      <div class="tgroup-title">剪切片段</div>
+      <div class="trow"><label>范围</label><span class="srcName" id="cutInfo">选好文件后自动填入全长</span></div>
+      <div class="cutbox">
+        <div class="cutlab"><span id="cutA">00:00</span><span id="cutB">00:00</span></div>
+        <input type="range" id="cutStartR" min="0" max="1000" value="0">
+        <input type="range" id="cutEndR" min="0" max="1000" value="1000">
+        <div class="cutlab2"><span>拖上面调起点，拖下面调终点</span><span id="cutLen">长度 --</span></div>
+        <div class="numin">
+          <input id="cutStartT" inputmode="numeric" placeholder="起（秒）">
+          <input id="cutEndT" inputmode="numeric" placeholder="止（秒）">
+          <button class="btnmini" id="applyCutNum">应用</button>
+        </div>
+      </div>
+      <button class="act" id="doCut">剪出这一段</button>
+      <div class="splitbox">
+        <div class="splitlab">或者平均切成</div>
+        <div class="numin">
+          <select id="splitN">
+            <option value="2">2 段</option>
+            <option value="3" selected>3 段</option>
+            <option value="4">4 段</option>
+            <option value="5">5 段</option>
+            <option value="6">6 段</option>
+          </select>
+          <button class="btnmini" id="doSplit">平均分段</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tgroup" data-for="video">
+      <div class="tgroup-title" id="extractTitle">提取音频</div>
+      <p class="tnote">从视频里把声音单独拿出来（存成 MP3）</p>
+      <button class="act" id="doExtract">提取音频</button>
+    </div>
+
+    <div class="tgroup" data-for="audio">
+      <div class="tgroup-title">合并</div>
+      <p class="tnote">在播放列表里选中多个文件后，按顺序拼成一个</p>
+      <button class="act" id="doMerge">合并列表里的音频</button>
+    </div>
+
+    <div class="tgroup">
+      <div class="tgroup-title">修复 / 重封装</div>
+      <p class="tnote">文件放不出来时试试，能救回大部分损坏文件</p>
+      <div class="trow"><label>方式</label>
+        <select id="fixMode">
+          <option value="0">快速（只修容器，秒完成）</option>
+          <option value="1">彻底（重新编码成 MP3，慢）</option>
+        </select>
+      </div>
+      <button class="act" id="doFix">尝试修复</button>
+    </div>
+
+    <div class="tgroup">
+      <div class="tgroup-title">输出</div>
+      <div class="trow">
+        <label>输出到</label>
+        <span class="srcName" id="outPath" style="flex:1">/storage/emulated/0/大肥鱼工作台/</span>
+        <button class="btnmini" id="pickOutDir">更改</button>
+      </div>
+      <div class="trow"><span class="srcName" id="jobState"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="files" id="files">
+  <div class="fhead">
+    <button class="ghost" id="fBack"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="fpath" id="fPath">/storage/emulated/0</div>
+    <button class="ghost" id="fClose"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="fhint" id="fHint"></div>
+  <div class="flist" id="fList"></div>
+</div>
+
+
+<div class="logpanel" id="logPanel">
+  <h3><span>运行日志</span><button id="logClose"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></h3>
+  <div class="logtools">
+    <button class="ghost" id="logCopy">复制</button>
+    <button class="ghost" id="logClear">清空</button>
+    <button class="ghost" id="logRefresh">刷新</button>
+  </div>
+  <pre class="logbody" id="logBody"></pre>
+</div>
+
+<div class="mask" id="mask"></div>
+<div class="set-panel" id="settingPanel">
+  <h3><span>设置</span><button id="setClose"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></h3>
+  <div class="set-body">
+    <div class="set-row2">
+      <div><b>后台播放</b><span>息屏或切到别的应用时继续播放，通知栏可控制</span></div>
+      <input type="checkbox" id="bgSwitch">
+    </div>
+    <div class="set-note2">关闭时，离开软件会自动停止播放。</div>
+    <div class="set-row2" id="logRow">
+      <div><b>运行日志</b><span>出问题时可以看看，或复制给开发者</span></div>
+      <button class="ghost" id="btnLog">查看</button>
+    </div>
+    <div class="set-row2">
+      <div><b>清理导入缓存</b><span>清掉外部打开文件留下的临时副本，不影响播放列表</span></div>
+      <button class="ghost" id="btnClean">清理</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>

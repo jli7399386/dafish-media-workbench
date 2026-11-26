@@ -1,0 +1,35 @@
+# ===== 绝对不要提交 =====
+*.keystore
+*.jks
+*.p12
+.kspass
+
+# ===== 原生库：ffmpeg-kit 的 GPL v3 构建产物，体积大且不宜再分发 =====
+src/jni/
+*.so
+
+# ===== 构建产物 =====
+src/build/
+build/
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+classes/
+dex/
+
+# ===== 备份与临时 =====
+*.bak
+*.bak-*
+*.orig
+*.tmp
+*~
+._*
+
+# ===== 编辑器 / 系统 =====
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
